@@ -6,7 +6,7 @@ from html.parser import HTMLParser
 import json
 
 
-USER_AGENT = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+USER_AGENT = { "User-Agent": "Chrome/103.0.0.0 Safari/537.36", "Accept-Language": "en-US,en;q=0.9"}
 
 class SearchEngine:
     @staticmethod
@@ -16,7 +16,6 @@ class SearchEngine:
         
         temp_url = '+'.join(query.split())
         url = 'http://www.bing.com/search?q=' + temp_url + '&count=30'
-        print(url)
         soup = BeautifulSoup(requests.get(url, headers=USER_AGENT).text, "html.parser")
         new_results = SearchEngine.scrape_search_result(soup)
         return new_results
@@ -42,10 +41,11 @@ if __name__ == "__main__":
     
     queryFile = open('queries.txt', 'r')
     output_dict = {}
-    for query in queryFile:
+    for idx, query in enumerate(queryFile):
+        print(idx)
         results = SearchEngine.search(query)
         output_dict[query.strip()] = results
 
-    with open('result.json', 'w') as fp:
+    with open('bing_rresult_3.json', 'w') as fp:
         json.dump(output_dict, fp)
         
